@@ -1,6 +1,6 @@
 use proc_macro::TokenStream;
+use quote::{format_ident, quote};
 use syn::{parse_macro_input, DeriveInput};
-use quote::{quote, format_ident};
 
 #[proc_macro_derive(Builder)]
 pub fn derive(input: TokenStream) -> TokenStream {
@@ -19,12 +19,34 @@ pub fn derive(input: TokenStream) -> TokenStream {
             current_dir: Option<String>,
         }
 
+        impl #builder_ident {
+            fn executable(&mut self, executable: String) -> &mut Self {
+                self.executable = Some(executable);
+                self
+            }
+
+            fn args(&mut self, args: Vec<String>) -> &mut Self {
+                self.args = Some(args);
+                self
+            }
+
+            fn env(&mut self, env: Vec<String>) -> &mut Self {
+                self.env = Some(env);
+                self
+            }
+
+            fn current_dir(&mut self, current_dir: String) -> &mut Self {
+                self.current_dir = Some(current_dir);
+                self
+            }
+        }
+
         impl #source_ident {
             pub fn builder() -> #builder_ident {
                 #builder_ident {
                     executable: None,
                     args: None,
-                    env: None, 
+                    env: None,
                     current_dir: None
                 }
             }
