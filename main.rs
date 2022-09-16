@@ -14,6 +14,7 @@ pub struct Command {
     args: Vec<String>,
     env: Vec<String>,
     current_dir: String,
+    figher_jet: Option<u32>,
 }
 
 fn main() {
